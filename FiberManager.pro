@@ -17,7 +17,9 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    dbmanager.cpp
+    dbmanager.cpp \
+    gestionLivrables.cpp
 
 HEADERS += \
-    dbmanager.h
+    dbmanager.h \
+    gestionLivrables.h

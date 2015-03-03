@@ -6,6 +6,8 @@
 #include <QSqlError>
 #include <QSqlQuery>
 
+#include "gestionLivrables.h"
+
 using namespace std;
 
 void lineOut(QString tranche, QString noeud, QString noeud_bis, QString comadre, QString message, QString niveau){
@@ -163,7 +165,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     cout << "Démarrage de FiberManager"<< endl;
-    cout<< "poche" << ";"<<"Noeud"<<";"<<"Etiquette"<<";"<<"Point Tech"<<";"<<"Type erreur"<<";"<<"Niveau" <<endl;
+/*    cout<< "poche" << ";"<<"Noeud"<<";"<<"Etiquette"<<";"<<"Point Tech"<<";"<<"Type erreur"<<";"<<"Niveau" <<endl;
 
 
     QSqlDatabase qsd = QSqlDatabase::addDatabase("QPSQL");
@@ -177,9 +179,10 @@ int main(int argc, char *argv[])
             qDebug() << qsd.lastError().text();
             return false;
     }
+    */
 
     /** Contrôle nommage */
-    //QSqlQuery query("SELECT \"DELETED\", \"NOEUD\", \"TRANCHE\", \"NOEUD_BIS\" from noeuds order by \"TRANCHE\"");
+/*    //QSqlQuery query("SELECT \"DELETED\", \"NOEUD\", \"TRANCHE\", \"NOEUD_BIS\" from noeuds order by \"TRANCHE\"");
     QSqlQuery query("select noeuds.\"DELETED\", noeuds.\"NOEUD\", noeuds.\"TRANCHE\", noeuds.\"NOEUD_BIS\", pb.\"COMADRE\" from noeuds, pb where noeuds.\"NOEUD\"=pb.\"NOEUD\" order by \"TRANCHE\"");
     qDebug() << query.lastError().text();
     while(query.next()){
@@ -197,9 +200,10 @@ int main(int argc, char *argv[])
 
 
     }
+    */
 
     /** Contrôle extrémité câble*/
-    query.prepare("SELECT \"DELETED\", \"NOEUD\", \"COFFRET\" from noeuds order by \"NOEUD\"") ;
+/*   query.prepare("SELECT \"DELETED\", \"NOEUD\", \"COFFRET\" from noeuds order by \"NOEUD\"") ;
     query.exec();
     while(query.next()){
         QString deleted = query.value(0).toString().trimmed();
@@ -208,9 +212,9 @@ int main(int argc, char *argv[])
 
         extremiteControl(deleted, noeud, coffret);
     }
-
+*/
     /** Vérification adresse BPI*/
-    query.prepare("SELECT \"DELETED\", \"NOEUD\", \"NOEUD_BIS\", \"NUM_VOIE\", \"RIVOLI\" from noeuds order by \"NOEUD\"");
+ /*   query.prepare("SELECT \"DELETED\", \"NOEUD\", \"NOEUD_BIS\", \"NUM_VOIE\", \"RIVOLI\" from noeuds order by \"NOEUD\"");
     query.exec();
     while(query.next()){
         QString deleted = query.value(0).toString().trimmed();
@@ -221,9 +225,9 @@ int main(int argc, char *argv[])
 
         adresseControl(deleted, noeud, noeud_bis, num_voie, rivoli);
     }
-
+*/
     /** Vérification matériel utilisé: Réference NetGeo*/
-    query.prepare("SELECT \"DELETED\", \"NOEUD\", \"REF_MAT\" from noeuds where \"REF_MAT\" NOT IN (SELECT \"REF_MAT\" from b_freeo)");
+ /*   query.prepare("SELECT \"DELETED\", \"NOEUD\", \"REF_MAT\" from noeuds where \"REF_MAT\" NOT IN (SELECT \"REF_MAT\" from b_freeo)");
     query.exec();
     while(query.next()){
         QString deleted = query.value(0).toString().trimmed();
@@ -231,8 +235,7 @@ int main(int argc, char *argv[])
         QString ref_mat = query.value(2).toString().trimmed();
         if(!deleted.contains("*"))
             qDebug() << noeud << ref_mat <<"matériel non utilisé en INDC; Erreur";
-    }
-
+    }/
      /** Nombre de câble par boîte */
     /*
     QString req = "select boite.noeud, nb_cable, noeuds.\"REF_MAT\", \"DESIGNAT\" "
@@ -328,6 +331,9 @@ int main(int argc, char *argv[])
 */
     /** FLR */
    // query.prepare("select mediapost.hexacle, mediapost.num, mediapost.suf, mediapost.voie, mediapost.pm, mediapost.z_avant, ")
+
+
+    /** Gestion des livrable*/
 
     return a.exec();
 
