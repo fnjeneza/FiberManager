@@ -11,7 +11,9 @@ class dbManager
 {
 public:
     dbManager();
+    dbManager(QString connection);
     QSqlQuery sendRequest(QString request);
+    QSqlQuery sendRequest(QString connection,QString request);
 
 private:
 //    QString host = "10.0.0.254";

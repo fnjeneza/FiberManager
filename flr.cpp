@@ -10,7 +10,7 @@ flr::~flr(){
 
 void flr::extractionFlr(){
     qDebug() << "*** Extraction du FLR ***";
-    QString request = "select * from flr_tmp limit 2";
+    QString request = "select * from flr_tmp limit 4";
 
 
     QSqlQuery qsq = dbm->sendRequest(request);
@@ -43,13 +43,16 @@ void flr::extractionFlr(){
 
         QString habitat = (bal>1)?"COLL" :"IND";
 
-        dbManager *dbm2=new dbManager();
-        QString requete2 = "select * from noeuds where '"+bpi.left(7)+"'";
+        //qDebug()<<"$$$"<< bpi.left(7)<<bpi.right(5);
+        //QString requete2 = "select * from fictif_tmp where '"+bpi.left(7)+"'";
 
-        dbm2->sendRequest(requete2);
+        QSqlQuery monbpi = dbm->sendRequest("connection", "select * from fictif_tmp");
+        while(monbpi.next()){
+           // qDebug()<<"";
+        }
         QString zone ="";
-        qDebug() << hexacle+";"+adr+";"<<bal<<";"<<"PHD;"+parcelle+";"+zone+";"+habitat+";"+type_ch+";"
-                 <<anc_chau<<+";"+type_tro+";"<<anc_tro<<+";COMMUNALE;JOF06;"<<poche<<+";"+bpi+";GC;FT;"+pm+";"<<lr_pm<<+";"+commentaire;
+//        qDebug() << hexacle+";"+adr+";"<<bal<<";"<<"PHD;"+parcelle+";"+zone+";"+habitat+";"+type_ch+";"
+//                 <<anc_chau<<+";"+type_tro+";"<<anc_tro<<+";COMMUNALE;JOF06;"<<poche<<+";"+bpi+";GC;FT;"+pm+";"<<lr_pm<<+";"+commentaire;
     }
 }
 
