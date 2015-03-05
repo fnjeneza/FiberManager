@@ -10,16 +10,11 @@
 class dbManager
 {
 public:
-    dbManager();
     dbManager(QString connection);
+    dbManager(QString connection, QString host, QString dbName, QString userName, QString pwd);
+    ~dbManager();
     QSqlQuery sendRequest(QString request);
-    QSqlQuery sendRequest(QString connection,QString request);
-
-private:
-//    QString host = "10.0.0.254";
-//    QString dbName = "PLA06_005";
-//    QString userName = "be_free";
-//    QString passwd = "123456";
+    //QSqlQuery sendRequest(QString connection,QString request);
 
     QSqlDatabase qsd;
 public:

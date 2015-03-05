@@ -1,8 +1,8 @@
 #include "dbmanager.h"
 
-dbManager::dbManager()
+dbManager::dbManager(QString connection)
 {
-    QSqlDatabase qsd = QSqlDatabase::addDatabase("QPSQL");
+    qsd = QSqlDatabase::addDatabase("QPSQL", connection);
     //qsd.setHostName("10.0.0.254");
     qsd.setHostName("192.168.0.14");
     qsd.setDatabaseName("PLA06_005");
@@ -11,9 +11,16 @@ dbManager::dbManager()
 
     if(!qsd.open()){
             qDebug() << qsd.lastError().text();
+            query = QSqlQuery(qsd);
     }
 
-    query = QSqlQuery(qsd);
+
+}
+
+dbManager::~dbManager(){
+    if(qsd.isOpen()){
+        qsd.close();
+    }
 }
 
 //dbManager::dbManager(QString connection){
@@ -37,24 +44,24 @@ QSqlQuery dbManager::sendRequest(QString request){
     return query;
 }
 
-QSqlQuery dbManager::sendRequest(QString connection, QString request){
-    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL",connection);
-    //qsd.setHostName("10.0.0.254");
-    db.setHostName("192.168.0.14");
-    db.setDatabaseName("PLA06_005");
-    db.setUserName("be_free");
-    db.setPassword("123456");
+//QSqlQuery dbManager::sendRequest(QString connection, QString request){
+//    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL",connection);
+//    //qsd.setHostName("10.0.0.254");
+//    db.setHostName("192.168.0.14");
+//    db.setDatabaseName("PLA06_005");
+//    db.setUserName("be_free");
+//    db.setPassword("123456");
 
 
 
-    if(!db.open()){
+//    if(!db.open()){
 
-            qDebug() << db.lastError().text();
-    }
+//            qDebug() << db.lastError().text();
+//    }
 
-    QSqlQuery qq = QSqlQuery(db);
-    qq.exec(request);
-    return qq;
+//    QSqlQuery qq = QSqlQuery(db);
+//    qq.exec(request);
+//    return qq;
 
-}
+//}
 
