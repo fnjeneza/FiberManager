@@ -16,8 +16,9 @@ int main(int argc, char *argv[]){
     cout<< "Démarrage de Fiber Manager";
 
     /** Extraction du FLR */
-    flr *ff=new flr();
-    ff->extractionFlr();
+    flr *leFlr=new flr();
+    leFlr->extractionFlr();
+    delete leFlr;
 
 
     return a.exec();

@@ -12,6 +12,7 @@ public:
 
 private:
     dbManager *dbm;
+    dbManager *secondary;
 };
 
 #endif // FLR_H
