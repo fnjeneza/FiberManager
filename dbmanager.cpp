@@ -4,23 +4,23 @@ dbManager::dbManager(QString connection)
 {
     qsd = QSqlDatabase::addDatabase("QPSQL", connection);
     //qsd.setHostName("10.0.0.254");
-    qsd.setHostName("192.168.0.14");
+    qsd.setHostName("192.168.0.22");
     qsd.setDatabaseName("PLA06_005");
     qsd.setUserName("be_free");
     qsd.setPassword("123456");
 
     if(!qsd.open()){
             qDebug() << qsd.lastError().text();
-            query = QSqlQuery(qsd);
+
     }
 
-
+    query = QSqlQuery(qsd);
 }
 
 dbManager::~dbManager(){
-    if(qsd.isOpen()){
-        qsd.close();
-    }
+//    if(qsd.isOpen()){
+//        qsd.close();
+//    }
 }
 
 //dbManager::dbManager(QString connection){

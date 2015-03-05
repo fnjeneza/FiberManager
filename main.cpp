@@ -21,7 +21,7 @@ int main(int argc, char *argv[]){
     delete leFlr;
 
 
-    return a.exec();
+    return 0;
 }
 
 //void lineOut(QString tranche, QString noeud, QString noeud_bis, QString comadre, QString message, QString niveau){
