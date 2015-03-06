@@ -34,19 +34,42 @@ void flr::extractionFlr(){
         int bal = qsq.value(4).toInt();
         QString parcelle = qsq.value(5).toString().trimmed();
         QString type_ch = qsq.value(6).toString().trimmed();
-        int anc_chau = qsq.value(7).toInt();
+        QString anc_chau =QString::number(qsq.value(7).toInt());
         QString type_tro = qsq.value(8).toString().trimmed();
-        int anc_tro = qsq.value(9).toInt();
-        int poche = qsq.value(10).toInt();
+        QString anc_tro = QString::number(qsq.value(9).toInt());
+        QString poche = QString::number(qsq.value(10).toInt());
         QString bpi = qsq.value(11).toString().trimmed();
         QString pm = qsq.value(12).toString().trimmed();
+        if(pm.isEmpty()) pm = "PAS DE PM";
         int lr_pm = qsq.value(13).toInt();
         QString commentaire = qsq.value(14).toString().trimmed();
-
+        QString adduction="GC";
+        QString concessionnaire="FT";
+        QString gestionnaire="COMMUNALE";
+        QString phd="PHD";
+        QString nro="JOF06";
         QString habitat = (bal>1)?"COLL" :"IND";
         QString zone;
-        if(!parcelle.contains("HORS") || !parcelle.contains("INEXISTANTE")){
+        if(parcelle.contains("HORS") || parcelle.contains("INEXISTANTE")){
+            phd.clear();
+            habitat.clear();
+            anc_chau.clear();
+            anc_tro.clear();
+            poche.clear();
+            adduction.clear();
+            concessionnaire.clear();
+            nro.clear();
+            gestionnaire.clear();
+        }
+        else{
+
             zone="ZONE ARRIERE";
+
+        }
+
+        if(hexacle.contains("CREA")){
+            hexacle.clear();
+            parcelle="CREATION ADRESSE";
         }
 
         QString sit = bpi.left(21).right(17);
@@ -68,7 +91,6 @@ void flr::extractionFlr(){
         /** Determination de zone avant*/
         if(bpiAdress.compare(adresse)==0){
             zone="ZONE AVANT";
-//            qDebug()<<sit<<" "<<zone;
         }
 
         /** Determination de PDB fictif*/
@@ -82,8 +104,8 @@ void flr::extractionFlr(){
                 bpi="PDB_PLA06_005_"+noeudAmont.right(6);
             }
         }
-        out = hexacle+";"+adresse+";"+QString::number(bal)+";"+"PHD;"+parcelle+";"+zone+";"+habitat+";"+type_ch+";"
-                 +QString::number(anc_chau)+";"+type_tro+";"+QString::number(anc_tro)+";COMMUNALE;JOF06;"+QString::number(poche)+";"+bpi+";GC;FT;"+pm+";"+QString::number(lr_pm)+";"+commentaire;
+        out = "\""+hexacle+"\";"+adresse+";"+QString::number(bal)+";"+phd+";"+parcelle+";"+zone+";"+habitat+";"+type_ch+";"
+                 +anc_chau+";"+type_tro+";"+anc_tro+";"+gestionnaire+";"+nro+";"+poche+";"+bpi+";"+adduction+";"+concessionnaire+";\""+pm+"\";"+QString::number(lr_pm)+";"+commentaire;
 
         std::cout<< out.toStdString()<<std::endl;
     }
