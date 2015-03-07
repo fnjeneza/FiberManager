@@ -8,6 +8,7 @@
 
 #include "gestionLivrables.h"
 #include "flr.h"
+#include "conduite.h"
 
 using namespace std;
 
@@ -16,9 +17,13 @@ int main(int argc, char *argv[]){
     cout<< "Démarrage de Fiber Manager";
 
     /** Extraction du FLR */
-    flr *leFlr=new flr();
-    leFlr->extractionFlr();
-    delete leFlr;
+    //flr *leFlr=new flr();
+    //leFlr->extractionFlr();
+    //delete leFlr;
+
+    /** Chambre empruntées */
+    conduite cnd=  conduite();
+    cnd.getConduiteUtilisee();
 
 
     return 0;

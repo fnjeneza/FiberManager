@@ -26,11 +26,12 @@ void flr::extractionFlr(){
         QString adresse;
         if(qsq.value(2).toString().isEmpty()){
             adresse= qsq.value(1).toString().trimmed()+" "+qsq.value(3).toString().trimmed();
+            adresse+=" 06000 NICE";
         }else{
             adresse = qsq.value(1).toString().trimmed()+" "+qsq.value(2).toString().trimmed()+" "+qsq.value(3).toString().trimmed();
+            adresse+=" 06000 NICE";
         }
-        adresse+=" 06000 NICE";
-        //qDebug()<<"Adresse "<<adresse;
+
         int bal = qsq.value(4).toInt();
         QString parcelle = qsq.value(5).toString().trimmed();
         QString type_ch = qsq.value(6).toString().trimmed();
@@ -40,7 +41,7 @@ void flr::extractionFlr(){
         QString poche = QString::number(qsq.value(10).toInt());
         QString bpi = qsq.value(11).toString().trimmed();
         QString pm = qsq.value(12).toString().trimmed();
-        if(pm.isEmpty()) pm = "PAS DE PM";
+
         int lr_pm = qsq.value(13).toInt();
         QString commentaire = qsq.value(14).toString().trimmed();
         QString adduction="GC";
@@ -48,8 +49,14 @@ void flr::extractionFlr(){
         QString gestionnaire="COMMUNALE";
         QString phd="PHD";
         QString nro="JOF06";
+
         QString habitat = (bal>1)?"COLL" :"IND";
         QString zone;
+
+        /** Traitement pour PM */
+        if(pm.isEmpty()) pm = "PAS DE PM";
+
+        /** Traitement pour les adresses hors plaque/Inexistante */
         if(parcelle.contains("HORS") || parcelle.contains("INEXISTANTE")){
             phd.clear();
             habitat.clear();
@@ -62,9 +69,7 @@ void flr::extractionFlr(){
             gestionnaire.clear();
         }
         else{
-
             zone="ZONE ARRIERE";
-
         }
 
         if(hexacle.contains("CREA")){
@@ -80,14 +85,15 @@ void flr::extractionFlr(){
         if(qsq2.next()){
             if(qsq2.value(2).toString().isEmpty()){
                     bpiAdress=qsq2.value(0).toString().trimmed()+" "+qsq2.value(1).toString().trimmed()+" "+qsq2.value(3).toString().trimmed();
+                    bpiAdress+=" 06000 NICE";
             }
             else{
                     bpiAdress=qsq2.value(0).toString().trimmed()+" "+qsq2.value(1).toString().trimmed()+" "+qsq2.value(2).toString().trimmed()+" "+qsq2.value(3).toString().trimmed();
+                    bpiAdress+=" 06000 NICE";
             }
-            if(!bpiAdress.isEmpty()) bpiAdress+=" 06000 NICE";
 
-             //qDebug() <<" Adresse du BPI"<< bpiAdress ;
         }
+
         /** Determination de zone avant*/
         if(bpiAdress.compare(adresse)==0){
             zone="ZONE AVANT";
@@ -101,7 +107,7 @@ void flr::extractionFlr(){
                 noeudAmont+=qsq2.value(0).toString().trimmed();
                 //bpi="PDB"+qsq2.value(1).toString().trimmed().left(17);
 
-                bpi="PDB_PLA06_005_"+noeudAmont.right(6);
+                bpi="PDB_PLA06_005_"+noeudAmont.right(5);
             }
         }
         out = "\""+hexacle+"\";"+adresse+";"+QString::number(bal)+";"+phd+";"+parcelle+";"+zone+";"+habitat+";"+type_ch+";"

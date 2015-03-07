@@ -3,8 +3,8 @@
 dbManager::dbManager(QString connection)
 {
     qsd = QSqlDatabase::addDatabase("QPSQL", connection);
-    //qsd.setHostName("10.0.0.254");
-    qsd.setHostName("192.168.0.22");
+    qsd.setHostName("10.0.0.11");
+    //qsd.setHostName("192.168.0.22");
     qsd.setDatabaseName("PLA06_005");
     qsd.setUserName("be_free");
     qsd.setPassword("123456");
@@ -18,9 +18,9 @@ dbManager::dbManager(QString connection)
 }
 
 dbManager::~dbManager(){
-//    if(qsd.isOpen()){
-//        qsd.close();
-//    }
+    if(qsd.isOpen()){
+        qsd.close();
+    }
 }
 
 //dbManager::dbManager(QString connection){
