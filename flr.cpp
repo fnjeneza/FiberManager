@@ -1,5 +1,4 @@
 #include "flr.h"
-#include <iostream>
 
 flr::flr(){
     dbm = new dbManager("primary");
@@ -46,11 +45,11 @@ void flr::extractionFlr(){
         QString commentaire = qsq.value(14).toString().trimmed();
         QString adduction="GC";
         QString concessionnaire="FT";
-        QString gestionnaire="COMMUNALE";
+        QString gestionnaire="COMMUNAL";
         QString phd="PHD";
         QString nro="JOF06";
 
-        QString habitat = (bal>1)?"COLL" :"IND";
+        QString habitat = (bal>1)?"COLL" :"INDIV";
         QString zone;
 
         /** Traitement pour PM */
@@ -116,4 +115,48 @@ void flr::extractionFlr(){
         std::cout<< out.toStdString()<<std::endl;
     }
 }
+
+
+void flr::flrTableDbInit(QString fileName){
+    qDebug() << "Initialisation de la table flr dans la bdd";
+    QFile file(fileName);
+    if(!file.open(QFile::ReadOnly | QFile::Text)){
+        qDebug() << fileName << file.errorString();
+        return;
+    }
+
+    QTextStream in(&file);
+    QString text = in.readAll();
+    dbm->sendRequest(text);
+    file.close();
+}
+
+void flr::importFlr(QString flrFilePath){
+    QStringList column;
+    column << "hexacle" << "adresse" << "nb_bal" <<"phd_pbd"<<"parcelle"<<"zone"<<"type_habitat"
+           <<"type_chaussee"<<"anc_chaussee"<<"type_trottoir"<<"anc_trottoir"<<"gest_voirie"
+           <<"nro"<<"poche"<<"bpi_pdb_pme"<<"type_adduction"<<"concessionnaire"<<"ref_pm"<<"lr_pm"
+           <<"commentaire"<<"analyse_fi";
+
+    int lineCounter=0;
+
+    QFile file(flrFilePath);
+    if(!file.open(QFile::ReadOnly | QFile::Text)){
+        qDebug() << flrFilePath << file.errorString();
+        return;
+    }
+
+    QTextStream in(&file);
+    while(!in.atEnd()){
+        QStringList line = in.readLine().split(";");
+
+        if(lineCounter>10){
+            dbm->execRequest("flr",column,line);
+        }
+
+        lineCounter++;
+    }
+    file.close();
+}
+
 
