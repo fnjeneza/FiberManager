@@ -20,10 +20,12 @@ SOURCES += main.cpp \
     dbmanager.cpp \
     gestionLivrables.cpp \
     flr.cpp \
-    conduite.cpp
+    conduite.cpp \
+    parameters.cpp
 
 HEADERS += \
     dbmanager.h \
     gestionLivrables.h \
     flr.h \
-    conduite.h
+    conduite.h \
+    parameters.h

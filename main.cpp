@@ -9,23 +9,36 @@
 #include "gestionLivrables.h"
 #include "flr.h"
 #include "conduite.h"
+#include "filehandler.h"
+#include "parameters.h"
 
 using namespace std;
 
 int main(int argc, char *argv[]){
     QCoreApplication a(argc, argv);
-    cout<< "Démarrage de Fiber Manager";
+    cout << "Démarrage de Fiber Manager";
 
-    /** Extraction du FLR */
-    //flr *leFlr=new flr();
-    //leFlr->extractionFlr();
-    //delete leFlr;
+    parameters parameter = parameters();
+    parameter.setPathRoot("../FiberManager");
+
+
+    flr *leFlr=new flr();
+
+    /** Initialisation du FLR dans la base */
+    leFlr->flrTableDbInit(parameter.getPathRoot()+"/SQL/flr.sql");
+
+    /** Import du FLR */
+    leFlr->importFlr("FLR_APS_JOF06_INDA.csv");
+
+    /** Import du FLR */
+//    fileHandler *fh =new fileHandler();
+//    fh->importFlr("FLR_APS_JOF06_INDA.csv");
 
     /** Chambre empruntées */
-    conduite cnd=  conduite();
-    cnd.getConduiteUtilisee();
+//    conduite cnd=  conduite();
+//    cnd.getConduiteUtilisee();
 
-
+    delete leFlr;
     return 0;
 }
 
