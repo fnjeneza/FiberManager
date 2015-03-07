@@ -3,17 +3,22 @@
 dbManager::dbManager(QString connection)
 {
     qsd = QSqlDatabase::addDatabase("QPSQL", connection);
-    qsd.setHostName("10.0.0.11");
-    //qsd.setHostName("192.168.0.22");
-    qsd.setDatabaseName("PLA06_005");
-    qsd.setUserName("be_free");
-    qsd.setPassword("123456");
+
+    this->host="192.168.0.29";
+    this->bdd="PLA06_005";
+    this->user = "be_free";
+    this->password = "123456";
+
+    qsd.setHostName(host);
+    qsd.setDatabaseName(bdd);
+    qsd.setUserName(user);
+    qsd.setPassword(password);
 
     if(!qsd.open()){
             qDebug() << qsd.lastError().text();
-
+            return;
     }
-
+    qDebug()<< "Connexion à la base de donnée "+host+": "+user+" reussie";
     query = QSqlQuery(qsd);
 }
 
@@ -23,45 +28,44 @@ dbManager::~dbManager(){
     }
 }
 
-//dbManager::dbManager(QString connection){
-//    QSqlDatabase qsd = QSqlDatabase::addDatabase("QPSQL",connection);
-//    //qsd.setHostName("10.0.0.254");
-//    qsd.setHostName("192.168.0.12");
-//    qsd.setDatabaseName("PLA06_005");
-//    qsd.setUserName("be_free");
-//    qsd.setPassword("123456");
 
-//    if(!qsd.open()){
-//            qDebug() << qsd.lastError().text();
-//    }
 
-//}
-
+/**
+ * @brief dbManager::sendRequest
+ * @param request
+ * @return
+ */
 QSqlQuery dbManager::sendRequest(QString request){
-    query.prepare(request);
-    query.exec();
-    qDebug()<< query.lastError().text();
+    //query.prepare(request);
+    if(!query.exec(request)){
+        qDebug()<< query.lastError().text();
+    }
     return query;
 }
 
-//QSqlQuery dbManager::sendRequest(QString connection, QString request){
-//    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL",connection);
-//    //qsd.setHostName("10.0.0.254");
-//    db.setHostName("192.168.0.14");
-//    db.setDatabaseName("PLA06_005");
-//    db.setUserName("be_free");
-//    db.setPassword("123456");
+void dbManager::execRequest(QString tableName, QStringList column, QStringList values){
+    int nbCol = column.size();
 
+    QString request = "INSERT INTO "+tableName+" (";
+    QString request2=" VALUES (";
 
+    for(int i=0; i<nbCol-1; i++){
+            request+=column.at(i)+",";
+            QString value = values.at(i);
+            if(!value.isEmpty()){
+                request2+="\'"+values.at(i)+"\',";
+            }else{
+                request2+="NULL,";
+            }
+    }
+    request+=column.last()+")";
+    if(!values.last().isEmpty()){
+        request2+="\'"+values.last()+"\')";
+    }
+    else{
+        request2+="NULL)";
+    }
+    request+=request2;
+    sendRequest(request);
 
-//    if(!db.open()){
-
-//            qDebug() << db.lastError().text();
-//    }
-
-//    QSqlQuery qq = QSqlQuery(db);
-//    qq.exec(request);
-//    return qq;
-
-//}
-
+}
