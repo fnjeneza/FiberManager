@@ -1,0 +1,6 @@
+CREATE SCHEMA infra;
+CREATE SCHEMA optique;
+CREATE SCHEMA netgeo;
+
+
+
