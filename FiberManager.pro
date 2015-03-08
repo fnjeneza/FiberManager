@@ -19,14 +19,12 @@ TEMPLATE = app
 SOURCES += main.cpp \
     dbmanager.cpp \
     parameters.cpp \
-    flr.cpp \
     handler.cpp
 
 HEADERS += \
     dbmanager.h \
     parameters.h \
     request.h \
-    flr.h \
     handler.h
 
 OTHER_FILES +=
