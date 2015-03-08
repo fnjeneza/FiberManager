@@ -18,7 +18,7 @@ dbManager::dbManager(QString connection)
             qDebug() << qsd.lastError().text();
             return;
     }
-    qDebug()<< "Connexion à la base de donnée "+host+": "+user+" reussie";
+//    qDebug()<< "Connexion à la base de donnée "+host+": "+user+" reussie";
     query = QSqlQuery(qsd);
 }
 
@@ -36,11 +36,32 @@ dbManager::~dbManager(){
  * @return
  */
 QSqlQuery dbManager::sendRequest(QString request){
-    //query.prepare(request);
     if(!query.exec(request)){
         qDebug()<< query.lastError().text();
     }
     return query;
+}
+
+QStringList dbManager::sendRequest(QString request, QString commentaire){
+    if(!query.exec(request)){
+        qDebug()<< query.lastError().text();
+    }
+    QStringList response;
+    QStringList tmp;
+    QSqlRecord record = query.record();
+    for(int i=0;i<record.count(); i++){
+         tmp << record.fieldName(i);
+    }
+    response <<"Commentaire;"+tmp.join(";")+"\n";
+
+    while(query.next()){
+        tmp.clear();
+        for(int i=0;i<record.count();i++){
+            tmp<<query.value(i).toString().trimmed();
+        }
+        response <<commentaire+";"+tmp.join(";")+"\n";
+    }
+    return response;
 }
 
 void dbManager::execRequest(QString tableName, QStringList column, QStringList values){

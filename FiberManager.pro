@@ -10,7 +10,7 @@ QT       += core\
 QT       -= gui
 
 TARGET = FiberManager
-CONFIG   += console
+CONFIG   += console\
 CONFIG   -= app_bundle
 
 TEMPLATE = app
@@ -18,14 +18,15 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     dbmanager.cpp \
-    gestionLivrables.cpp \
+    parameters.cpp \
     flr.cpp \
-    conduite.cpp \
-    parameters.cpp
+    handler.cpp
 
 HEADERS += \
     dbmanager.h \
-    gestionLivrables.h \
+    parameters.h \
+    request.h \
     flr.h \
-    conduite.h \
-    parameters.h
+    handler.h
+
+OTHER_FILES +=

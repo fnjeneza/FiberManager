@@ -5,6 +5,7 @@
 #include <QSqlQuery>
 #include <QDebug>
 #include <QSqlError>
+#include <QSqlRecord>
 
 class dbManager
 {
@@ -12,6 +13,7 @@ public:
     dbManager(QString connection);
     ~dbManager();
     QSqlQuery sendRequest(QString request);
+    QStringList sendRequest(QString request, QString commentaire);
     void execRequest(QString,QStringList, QStringList);
 private:
     QString host;

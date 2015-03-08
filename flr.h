@@ -14,7 +14,9 @@ public:
     ~flr();
     void extractionFlr();
     void importFlr(QString flrFilePath);
-    void flrTableDbInit(QString fileName);
+    void execSqlFile(QString fileName);
+    void importTableFromCsv(QString schema, QString tableName);
+    void control(QString requete, QString message);
 
 private:
     dbManager *dbm;

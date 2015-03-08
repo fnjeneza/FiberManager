@@ -25,7 +25,11 @@ QString parameters::getUserPwd(){
 }
 
 QString parameters::getPathRoot(){
-    return pathRoot;
+    return parameters::pathRoot;
+}
+
+QString parameters::getScriptPath(){
+    return parameters::scriptPath;
 }
 
 void parameters::setHost(QString host){
@@ -49,5 +53,9 @@ void parameters::setUserPwd(QString userPwd){
 }
 
 void parameters::setPathRoot(QString pathRoot){
-    this->pathRoot=pathRoot;
+    parameters::pathRoot=pathRoot;
+}
+
+void parameters::setScriptPath(QString scriptPath){
+    parameters::scriptPath=scriptPath;
 }

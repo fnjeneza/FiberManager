@@ -4,7 +4,7 @@
 class Request
 {
 public:
-    Request();
+    static QString hexacle_incorrect;
 };
 
 #endif // REQUEST_H

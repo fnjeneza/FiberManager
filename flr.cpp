@@ -117,8 +117,7 @@ void flr::extractionFlr(){
 }
 
 
-void flr::flrTableDbInit(QString fileName){
-    qDebug() << "Initialisation de la table flr dans la bdd";
+void flr::execSqlFile(QString fileName){
     QFile file(fileName);
     if(!file.open(QFile::ReadOnly | QFile::Text)){
         qDebug() << fileName << file.errorString();
@@ -159,4 +158,39 @@ void flr::importFlr(QString flrFilePath){
     file.close();
 }
 
+
+void flr::importTableFromCsv(QString schema,QString tableName){
+    QString fileName = tableName+".csv";
+    QFile file(fileName);
+    if(!file.open(QFile::ReadOnly | QFile::Text)){
+        qDebug() << fileName << file.errorString();
+        return;
+    }
+    if(!schema.isEmpty()){
+        tableName=schema+"."+tableName;
+    }
+    QTextStream in(&file);
+    QStringList column = in.readLine().toLower().split(";");
+    while(!in.atEnd()){
+        QStringList line = in.readLine().split(";");
+        dbm->execRequest(tableName, column, line);
+    }
+    file.close();
+}
+
+void flr::control(QString requete, QString message){
+    QStringList list = dbm->sendRequest(requete,message);
+
+    QFile file("audit.csv");
+    if(!file.open(QFile::WriteOnly | QFile::Text)){
+        qDebug() << file.errorString();
+    }
+
+    QTextStream out(&file);
+    for(int i=0;i<list.size();i++){
+        out << list.at(i);
+    }
+    out.flush();
+    file.close();
+}
 

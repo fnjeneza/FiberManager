@@ -5,40 +5,61 @@
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QProcess>
 
-#include "gestionLivrables.h"
-#include "flr.h"
-#include "conduite.h"
-#include "filehandler.h"
+#include "handler.h"
 #include "parameters.h"
 
 using namespace std;
 
 int main(int argc, char *argv[]){
+
     QCoreApplication a(argc, argv);
-    cout << "Démarrage de Fiber Manager";
 
-    parameters parameter = parameters();
-    parameter.setPathRoot("../FiberManager");
+    Handler *h = new Handler();
 
+    //parameters parameter = parameters();
+    parameters::setPathRoot("../FiberManager");
 
-    flr *leFlr=new flr();
+    QStringList arguments = a.arguments();
+    QString schema;
 
-    /** Initialisation du FLR dans la base */
-    leFlr->flrTableDbInit(parameter.getPathRoot()+"/SQL/flr.sql");
+    for(int i=0;i<arguments.size();i++){
+        QString argument = arguments.at(i);
+        if(argument=="--schema"){
+            schema=arguments.at(i+1);
+            h->exportMdb("base.mdb", "site");
+        }
+
+        if(argument=="-f"){
+           h->execSqlFile(arguments.at(i+1));
+        }
+    }
 
     /** Import du FLR */
-    leFlr->importFlr("FLR_APS_JOF06_INDA.csv");
+//    leFlr->importFlr("FLR_APS_JOF06_INDA.csv");
 
-    /** Import du FLR */
-//    fileHandler *fh =new fileHandler();
-//    fh->importFlr("FLR_APS_JOF06_INDA.csv");
+    /** Initialisation de la base netgeo */
+    //leFlr->execSqlFile(parameter.getPathRoot()+"/SQL/netgeo.sql");
 
+    /** Import sites from netgeo*/
+    //leFlr->importTableFromCsv("netgeo","site");
+
+//    leFlr->control("select nom, code, adresse from netgeo.site where nom=code;",
+//                   "Code non conforme");
+//    leFlr->control("select hexacle from flr where hexacle not in (select code from netgeo.site);",
+//                   "hexacle non dans base");
+
+//    QProcess p;
+//    QStringList d;
+//    d<<"text.txt";
+//    p.start("touch", d);
+//    p.waitForFinished(-1);
     /** Chambre empruntées */
 //    conduite cnd=  conduite();
 //    cnd.getConduiteUtilisee();
 
-    delete leFlr;
+    delete h;
     return 0;
 }
 
