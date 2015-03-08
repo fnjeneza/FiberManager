@@ -18,8 +18,8 @@ int main(int argc, char *argv[]){
 
     Handler *h = new Handler();
 
-    //parameters parameter = parameters();
-    parameters::setPathRoot("../FiberManager");
+    parameters parameter = parameters();
+    parameter.setPathRoot("../FiberManager");
 
     QStringList arguments = a.arguments();
     QString schema;
