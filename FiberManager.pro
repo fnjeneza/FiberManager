@@ -16,15 +16,14 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += main.cpp \
-    dbmanager.cpp \
-    parameters.cpp \
-    handler.cpp
+SOURCES +=
+    src/dbmanager.cpp \
+    src/handler.cpp \
+    src/main.cpp \
+    src/parameters.cpp
 
-HEADERS += \
-    dbmanager.h \
-    parameters.h \
-    request.h \
-    handler.h
-
-OTHER_FILES +=
+HEADERS +=
+    header/dbmanager.h \
+    header/handler.h \
+    header/parameters.h \
+    header/request.h
