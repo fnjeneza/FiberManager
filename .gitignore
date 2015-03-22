@@ -1,2 +1,4 @@
 FiberManager.pro.user
 *~
+*.pyc
+*.bak
